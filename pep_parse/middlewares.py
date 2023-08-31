@@ -1,4 +1,13 @@
-from scrapy import signals
+from __future__ import annotations
+
+from typing import Union
+
+from scrapy import Item, signals
+from scrapy.crawler import Crawler
+from scrapy.http.request import Request
+from scrapy.http.response.html import HtmlResponse
+
+from pep_parse.spiders.pep import PepSpider
 
 
 class PepParseSpiderMiddleware:
@@ -9,7 +18,8 @@ class PepParseSpiderMiddleware:
     """
 
     @classmethod
-    def from_crawler(cls, crawler):
+    def from_crawler(cls: PepParseSpiderMiddleware,
+                     crawler: Crawler) -> PepParseSpiderMiddleware:
         """
         This method is used by Scrapy to create your spiders.
         """
@@ -17,7 +27,8 @@ class PepParseSpiderMiddleware:
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
         return s
 
-    def process_spider_input(self, response, spider):
+    def process_spider_input(self, response: HtmlResponse,
+                             spider: PepSpider) -> None:
         """
         Called for each response that goes through the spider
         middleware and into the spider.
@@ -26,7 +37,9 @@ class PepParseSpiderMiddleware:
         """
         return None
 
-    def process_spider_output(self, response, result, spider):
+    def process_spider_output(self, response: HtmlResponse,
+                              result: Union[Request, Item],
+                              spider: PepSpider) -> Union[Request, Item]:
         """
         Called with the results returned from the Spider, after
         it has processed the response.
@@ -36,7 +49,9 @@ class PepParseSpiderMiddleware:
         for i in result:
             yield i
 
-    def process_spider_exception(self, response, exception, spider):
+    def process_spider_exception(self, response: HtmlResponse,
+                                 exception: Exception,
+                                 spider: PepSpider) -> None:
         """
         Called when a spider or process_spider_input() method
         (from other spider middleware) raises an exception.
@@ -45,7 +60,8 @@ class PepParseSpiderMiddleware:
         """
         pass
 
-    def process_start_requests(self, start_requests, spider):
+    def process_start_requests(self, start_requests: Request,
+                               spider: PepSpider) -> Request:
         """
         Called with the start requests of the spider, and works
         similarly to the process_spider_output() method, except
@@ -56,7 +72,7 @@ class PepParseSpiderMiddleware:
         for r in start_requests:
             yield r
 
-    def spider_opened(self, spider):
+    def spider_opened(self, spider: PepSpider) -> None:
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
@@ -68,13 +84,14 @@ class PepParseDownloaderMiddleware:
     """
 
     @classmethod
-    def from_crawler(cls, crawler):
+    def from_crawler(cls: PepParseDownloaderMiddleware,
+                     crawler: Crawler) -> PepParseDownloaderMiddleware:
         """This method is used by Scrapy to create your spiders."""
         s = cls()
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
         return s
 
-    def process_request(self, request, spider):
+    def process_request(self, request: Request, spider: PepSpider) -> None:
         """
         Called for each request that goes through the downloader middleware.
 
@@ -87,7 +104,8 @@ class PepParseDownloaderMiddleware:
         """
         return None
 
-    def process_response(self, request, response, spider):
+    def process_response(self, request: Request, response: HtmlResponse,
+                         spider: PepSpider) -> HtmlResponse:
         """
         Called with the response returned from the downloader.
 
@@ -98,7 +116,8 @@ class PepParseDownloaderMiddleware:
         """
         return response
 
-    def process_exception(self, request, exception, spider):
+    def process_exception(self, request: Request,
+                          exception: Exception, spider: PepSpider) -> None:
         """
         Called when a download handler or a process_request()
         (from other downloader middleware) raises an exception.
@@ -110,5 +129,5 @@ class PepParseDownloaderMiddleware:
         """
         pass
 
-    def spider_opened(self, spider):
+    def spider_opened(self, spider: PepSpider) -> None:
         spider.logger.info('Spider opened: %s' % spider.name)

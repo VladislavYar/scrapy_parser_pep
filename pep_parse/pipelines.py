@@ -1,9 +1,9 @@
 import csv
 from datetime import datetime as dt
 
-from pep_parse.spiders.pep import PepSpider
-from pep_parse.settings import BASE_DIR, DT_FORMAT, FILE_FORMAT
 from pep_parse.items import PepParseItem
+from pep_parse.settings import BASE_DIR, DT_FORMAT, FILE_FORMAT
+from pep_parse.spiders.pep import PepSpider
 
 
 class PepParsePipeline:

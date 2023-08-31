@@ -1,6 +1,6 @@
 import scrapy
-from scrapy.http.response.html import HtmlResponse
 from scrapy.http.request import Request
+from scrapy.http.response.html import HtmlResponse
 
 from pep_parse.items import PepParseItem
 from pep_parse.settings import DOMAIN_PARSE
