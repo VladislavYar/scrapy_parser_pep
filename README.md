@@ -29,3 +29,6 @@ pip install -r requirements.txt
 ```
 scrapy crawl pep
 ```
+
+## Cтек проекта
+Python v3.9, Scrapy
